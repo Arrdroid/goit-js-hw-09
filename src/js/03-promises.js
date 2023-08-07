@@ -20,6 +20,11 @@ document.querySelector('.form').addEventListener('submit', function (event) {
     const delayStep = parseInt(formData.get('step'));
     const amount = parseInt(formData.get('amount'));
 
+    if (firstDelay < 0 || delayStep < 0 || amount <= 0) {
+        alert('Please fill the areas with valid numbers!');
+        return
+    }
+
     for (let i = 0; i < amount; i += 1) {
         const delay = firstDelay + i * delayStep;
 

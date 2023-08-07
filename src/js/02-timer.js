@@ -19,20 +19,28 @@ function addLeadingZero(value) {
     return value.toString().padStart(2, '0');
 }
 
+const startButton = document.querySelector('[data-start]');
+const inputField = document.getElementById('datetime-picker');
+const textDays = document.querySelector('[data-days]');
+const textHours = document.querySelector('[data-hours]');
+const textMinutes = document.querySelector('[data-minutes]');
+const textSeconds = document.querySelector('[data-seconds]');
+let selectedDate = null;
+
 const datetimePicker = flatpickr("#datetime-picker", {
     enableTime: true,
     time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        const selectedDate = selectedDates[0];
+        selectedDate = selectedDates[0];
         const currentDate = new Date();
 
         if (selectedDate <= currentDate) {
             window.alert("Please choose a date in the future");
-            document.querySelector('[data-start]').disabled = true;
+            startButton.disabled = true;
         } else {
-            document.querySelector('[data-start]').disabled = false;
+            startButton.disabled = false;
         }
     },
 });
@@ -40,14 +48,15 @@ const datetimePicker = flatpickr("#datetime-picker", {
 let countdownIntervalId;
 
 function updateTimerDisplay(time) {
-    document.querySelector('[data-days]').textContent = addLeadingZero(time.days);
-    document.querySelector('[data-hours]').textContent = addLeadingZero(time.hours);
-    document.querySelector('[data-minutes]').textContent = addLeadingZero(time.minutes);
-    document.querySelector('[data-seconds]').textContent = addLeadingZero(time.seconds);
+    textDays.textContent = addLeadingZero(time.days);
+    textHours.textContent = addLeadingZero(time.hours);
+    textMinutes.textContent = addLeadingZero(time.minutes);
+    textSeconds.textContent = addLeadingZero(time.seconds);
 }
 
 function startCountdown() {
-    const selectedDate = datetimePicker.selectedDates[0];
+    inputField.disabled = true;
+    startButton.disabled = true;
     const currentDate = new Date();
     const differenceMs = selectedDate - currentDate;
 
@@ -69,4 +78,4 @@ function startCountdown() {
     }, 1000);
 }
 
-document.querySelector('[data-start]').addEventListener('click', startCountdown);
+startButton.addEventListener('click', startCountdown);
